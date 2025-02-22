@@ -2,27 +2,23 @@
 import { ref, onMounted } from 'vue';
 import type { Ref } from 'vue';
 import axios from 'axios';
-import TheHeader from './components/TheHeader.vue';
+
+import TheHeader from '@/components/TheHeader.vue';
+import TodoItem from '@/components/TodoItem.vue';
+import type { TodoType } from '@/models/todo.ts';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
-interface Todo {
-  _id?: string;
-  title: string;
-  description: string;
-};
-
 // Members
-const formData: Ref<Todo> = ref({
+const formData: Ref<TodoType> = ref({
   title: '',
   description: '',
 });
-const todos: Ref<Todo[]> = ref([]);
+const todos: Ref<TodoType[]> = ref([]);
 
 // Methods
 onMounted(async () => {
   const response = await axios.get(`${API_URL}/todo`);
-  console.log(response);
   todos.value = response.data;
 });
 
@@ -30,7 +26,6 @@ async function addTodo(e: Event) {
   e.preventDefault();
   const todoItem = formData.value;
   const response = await axios.post(`${API_URL}/todo`, todoItem);
-  console.log(response.data);
   todos.value.push(response.data);
   formData.value = {
     title: '',
@@ -38,7 +33,7 @@ async function addTodo(e: Event) {
   };
 }
 
-async function removeTodo(item: Todo, i: number) {
+async function removeTodo(item: TodoType, i: number) {
   await axios.delete(`${API_URL}/todo/${item._id}`);
   todos.value.splice(i, 1);
 }
@@ -81,18 +76,11 @@ async function removeTodo(item: Todo, i: number) {
         <li
           v-for="(todo, i) in todos"
           :key="todo._id"
-          class="hover:shadow-md hover:bg-blue-100/50 flex justify-between w-full border border-gray-300 rounded-lg px-2 py-3 items-center gap-2"
         >
-          <div class="flex-1 flex flex-col gap-1">
-            <span class="font-bold text-sm">{{ todo.title }}</span>
-            <span>{{ todo.description }}</span>
-          </div>
-          <button
-            @click="removeTodo(todo, i)"
-            class="w-[1.45rem] h-[1.45rem] text-center rounded-full bg-red-500 text-white font-bold hover:text-red-500 hover:outline-2 hover:outline-red-500 hover:bg-white"
-          >
-            X
-          </button>
+          <TodoItem
+            :todo="todo"
+            @delete="(todo) => removeTodo(todo, i)"
+          ></TodoItem>
         </li>
       </ul>
     </div>
