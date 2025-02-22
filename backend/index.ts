@@ -7,7 +7,7 @@ import 'dotenv/config';
 import todoRoutes from './routes/todos';
 
 const app = express();
-const PORT = 7000;
+const PORT = process.env.PORT || 7000;
 
 mongoose.connect(process.env.MONGO_URI as string)
   .then(() => console.log('Database connected'))
