@@ -76,7 +76,7 @@ async function removeTodo(item: Todo, i: number) {
       </button>
     </form>
 
-    <div>
+    <div class="w-full">
       <ul class="flex flex-col gap-5">
         <li
           v-for="(todo, i) in todos"

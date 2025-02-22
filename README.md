@@ -39,4 +39,6 @@ npm run dev
 ```
 
 ### Roadmap
+- [ ] Ability to mark items completed without deleting.
+- [ ] Get rid of Axios. No real point using it here.
 - [ ] Authentication. I should probably figure that out w/ Express and Vue.
