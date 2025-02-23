@@ -11,10 +11,6 @@ import type { TodoType } from '@/models/todo.ts';
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 // Members
-const formData: Ref<TodoType> = ref({
-  title: '',
-  description: '',
-});
 const todos: Ref<TodoType[]> = ref([]);
 
 // Lifecycle methods
@@ -29,7 +25,7 @@ async function createTodo(newTodo: TodoType): Promise<any> {
   todos.value.push(response.data);
 }
 
-async function removeTodo(item: TodoType, i: number) {
+async function removeTodo(item: TodoType, i: number): Promise<any> {
   await axios.delete(`${API_URL}/todo/${item._id}`);
   todos.value.splice(i, 1);
 }

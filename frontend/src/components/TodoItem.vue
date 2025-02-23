@@ -4,7 +4,7 @@ defineProps<{
   todo: TodoType;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'delete', todo: TodoType): void;
 }>();
 </script>
@@ -13,6 +13,9 @@ const emit = defineEmits<{
   <div
     class="hover:shadow-md hover:bg-blue-100/50 flex justify-between w-full border border-gray-300 rounded-lg px-2 py-3 items-center gap-2"
   >
+    <input
+      type="checkbox"
+    >
     <div class="flex-1 flex flex-col gap-1">
       <span class="font-bold text-sm">{{ todo.title }}</span>
       <span>{{ todo.description }}</span>

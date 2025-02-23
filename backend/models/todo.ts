@@ -4,6 +4,7 @@ export type TodoType = {
   _id: string;
   title: string;
   description: string;
+  completed: boolean;
 };
 
 const todoSchema = new Schema({
@@ -14,6 +15,10 @@ const todoSchema = new Schema({
   description: {
     type: String,
     required: true,
+  },
+  completed: {
+    type: Boolean,
+    default: false,
   },
 });
 
