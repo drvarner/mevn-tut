@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import Todo from '../models/todo';
+import Todo, { TodoType } from '../models/todo';
 
 const router = express.Router();
 
@@ -22,6 +22,25 @@ router.post('/', async (req: Request, res: Response): Promise<any> => {
   } catch(err) {
     console.log(err);
     res.status(500).send({ message: 'Error creating todo' });
+  }
+});
+
+router.put('/:id', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const id = req.params.id;
+    const completed = { completed: req.body.completed };
+    const updated = await Todo.findOneAndUpdate({
+      _id: id,
+    }, completed, { new: true });
+
+    if (!updated) {
+      return res.status(404).send({ message: 'Todo item not found' });
+    }
+
+    await updated.save();
+    res.status(200).json(updated);
+  } catch(err) {
+    res.status(500).json({ message: 'Error completing todo' });
   }
 });
 

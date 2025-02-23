@@ -1,12 +1,22 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type  { TodoType } from '@/models/todo';
-defineProps<{
+
+const props = defineProps<{
   todo: TodoType;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'delete', todo: TodoType): void;
+  (e: 'complete', todo: TodoType, checked: boolean): void;
 }>();
+
+let completed = ref(props.todo.completed);
+
+function handleCheckClick(): void {
+  completed.value = !completed.value;
+  emit('complete', props.todo, completed.value);
+}
 </script>
 
 <template>
@@ -15,6 +25,8 @@ defineEmits<{
   >
     <input
       type="checkbox"
+      :checked="completed"
+      @click="handleCheckClick"
     >
     <div class="flex-1 flex flex-col gap-1">
       <span class="font-bold text-sm">{{ todo.title }}</span>
