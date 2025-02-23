@@ -5,7 +5,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'delete', todo: TodoType): void
+  (e: 'delete', todo: TodoType): void;
 }>();
 </script>
 
