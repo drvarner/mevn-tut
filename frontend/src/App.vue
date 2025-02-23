@@ -30,9 +30,13 @@ async function removeTodo(item: TodoType, i: number): Promise<any> {
   todos.value.splice(i, 1);
 }
 
-async function markComplete(item: TodoType, val: boolean): Promise<any> {
+async function markComplete(item: TodoType, val: boolean, i: number): Promise<any> {
   item.completed = val;
-  await axios.put(`${API_URL}/todo/${item._id}`, item);
+  try {
+    await axios.put(`${API_URL}/todo/${item._id}`, item);
+  } catch(err) {
+    console.error('Error completing task', err);
+  }
 }
 </script>
 
@@ -49,7 +53,7 @@ async function markComplete(item: TodoType, val: boolean): Promise<any> {
         >
           <TodoItem
             :todo="todo"
-            @complete="(todo, checked) => markComplete(todo, checked)"
+            @complete="(todo, checked) => markComplete(todo, checked, i)"
             @delete="(todo) => removeTodo(todo, i)"
           ></TodoItem>
         </li>
